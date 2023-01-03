@@ -4,6 +4,18 @@ class View {
 
     console.log(this.mainContainerEl);
   }
+
+  addParagraph() {
+    const newParagraph = document.createElement('p');
+    newParagraph.textContent = 'This paragraph has been dynamically added by javascript';
+    this.mainContainerEl.append(newParagraph);
+  }
+
+  clearParagraphs() {
+    const paragraphs = document.querySelectorAll('p');
+    // console.log(paragraphs);
+    paragraphs.forEach((paragraph) => paragraph.remove());
+  }
 }
 
 module.exports = View;
