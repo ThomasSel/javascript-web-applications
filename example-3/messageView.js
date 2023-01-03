@@ -1,5 +1,7 @@
 class MessageView {
   constructor() {
+    this.inputEl = document.querySelector('#message-input');
+
     this.showButtonEl = document.querySelector('#show-message-button');
     this.showButtonEl.addEventListener('click', () => {
       this.displayMessage();
@@ -14,7 +16,7 @@ class MessageView {
   displayMessage() {
     const messageElement = document.createElement('div');
     messageElement.id = 'message';
-    messageElement.textContent = 'Thanks for clicking me!';
+    messageElement.textContent = this.inputEl.value;
     document.querySelector('#main-container').append(messageElement);
   }
 
