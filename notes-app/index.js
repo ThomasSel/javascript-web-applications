@@ -1,1 +1,1 @@
-console.log('Hello world');
+console.log('The notes app is running');
