@@ -29,6 +29,8 @@ class NotesView {
     this.notesClient.loadNotes((notes) => {
       this.notesModel.setNotes(notes);
       this.displayNotes();
+    }, (error) => {
+      this.displayError(error);
     });
   }
 

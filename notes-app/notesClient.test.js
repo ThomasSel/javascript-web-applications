@@ -46,4 +46,16 @@ describe(NotesClient, () => {
       })
     );
   });
+
+  it('loadNotes catches fetch error', (done) => {
+    const notesClient = new NotesClient();
+
+    fetch.mockRejectedValue('Oops, something went wrong!');
+
+    notesClient.loadNotes(() => {}, (error) => {
+      expect(error).toBe('Oops, something went wrong!');
+
+      done();
+    });
+  });
 });

@@ -1,8 +1,9 @@
 class NotesClient {
-  loadNotes(callback) {
+  loadNotes(callback, errorCallback) {
     fetch('http://localhost:3000/notes')
       .then(response => response.json())
-      .then(responseData => callback(responseData));
+      .then(responseData => callback(responseData))
+      .catch(error => errorCallback(error));
   }
 
   createNote(note) {
