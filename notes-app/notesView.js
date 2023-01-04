@@ -1,7 +1,16 @@
 class NotesView {
-  constructor (notesModel) {
+  constructor(notesModel) {
     this.notesModel = notesModel
     this.mainContainer = document.querySelector('#main-container');
+    
+    const textInput = document.querySelector('#text-input');
+
+    document.querySelector('#input-button').addEventListener('click', () => {
+      this.removeNotes();
+      notesModel.addNote(textInput.value);
+      this.displayNotes();
+      textInput.value = '';
+    });
   }
   
   displayNotes() {
@@ -11,6 +20,11 @@ class NotesView {
       noteElement.textContent = note;
       this.mainContainer.append(noteElement);
     });
+  }
+
+  removeNotes() {
+    this.mainContainer.querySelectorAll('.note')
+      .forEach((note) => note.remove());
   }
 }
 
