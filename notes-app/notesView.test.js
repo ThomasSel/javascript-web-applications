@@ -75,4 +75,14 @@ describe(NotesView, () => {
     expect(notesModel.getNotes()).toEqual(['This is a mock note']);
     expect(displaySpy).toHaveBeenCalled();
   });
+
+  it('creates a note when button is clicked', () => {
+    const textInputEl = document.querySelector('#text-input');
+    const buttonEl = document.querySelector('#input-button');
+
+    textInputEl.value = 'Note 1';
+    buttonEl.click();
+
+    expect(notesClient.createNote).toHaveBeenCalledWith('Note 1');
+  });
 });

@@ -9,6 +9,7 @@ class NotesView {
     document.querySelector('#input-button').addEventListener('click', () => {
       notesModel.addNote(textInput.value);
       this.displayNotes();
+      notesClient.createNote(textInput.value);
       textInput.value = '';
     });
   }
