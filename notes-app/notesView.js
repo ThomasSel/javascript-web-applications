@@ -32,6 +32,13 @@ class NotesView {
     });
   }
 
+  displayError(error) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error';
+    errorElement.textContent = error;
+    this.mainContainer.append(errorElement);
+  }
+
   #removeNotes() {
     this.mainContainer.querySelectorAll('.note')
       .forEach((note) => note.remove());

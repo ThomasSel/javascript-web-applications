@@ -85,4 +85,9 @@ describe(NotesView, () => {
 
     expect(notesClient.createNote).toHaveBeenCalledWith('Note 1');
   });
+
+  it('displays error if no connection to database', () => {
+    notesView.displayError("Oops, something went wrong")
+    expect(document.querySelector('div.error').textContent).toBe('Oops, something went wrong')
+  })
 });
