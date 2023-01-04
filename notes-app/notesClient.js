@@ -6,14 +6,15 @@ class NotesClient {
       .catch(error => errorCallback(error));
   }
 
-  createNote(note) {
+  createNote(note, errorCallback) {
     fetch('http://localhost:3000/notes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({'content': note}),
-    });
+    })
+      .catch((error) => errorCallback(error));
   }
 }
 
