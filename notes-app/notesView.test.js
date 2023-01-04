@@ -65,13 +65,13 @@ describe(NotesView, () => {
 
   it('displays notes from notes server (GET /notes)', () => {
     const displaySpy = jest.spyOn(notesView, 'displayNotes');
-    notesClient.loadData.mockImplementation((callback) => {
+    notesClient.loadNotes.mockImplementation((callback) => {
       callback(['This is a mock note']);
     });
     
     notesView.displayNotesFromApi();
 
-    expect(notesClient.loadData).toHaveBeenCalled();
+    expect(notesClient.loadNotes).toHaveBeenCalled();
     expect(notesModel.getNotes()).toEqual(['This is a mock note']);
     expect(displaySpy).toHaveBeenCalled();
   });

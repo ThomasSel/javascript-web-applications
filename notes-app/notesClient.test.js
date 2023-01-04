@@ -23,7 +23,7 @@ describe(NotesClient, () => {
     // When the HTTP response is received, the callback will be called.
     // We then use `expect` to assert the data from the server contain
     // what it should.
-    notesClient.loadData((returnedDataFromApi) => {
+    notesClient.loadNotes((returnedDataFromApi) => {
       expect(returnedDataFromApi[0]).toBe("Mock note");
       expect(fetch).toHaveBeenCalledWith('http://localhost:3000/notes');
 
