@@ -15,16 +15,16 @@ describe(NotesClient, () => {
     // normally returns — you want your mocked response
     // to "look like" as the real response as closely as
     // possible (it should have the same fields).
-    fetch.mockResponseOnce(JSON.stringify({
-      text: "Mock note",
-    }));
+    fetch.mockResponseOnce(JSON.stringify([
+      "Mock note"
+    ]));
 
     // 3. We call the method, giving a callback function.
     // When the HTTP response is received, the callback will be called.
     // We then use `expect` to assert the data from the server contain
     // what it should.
     notesClient.loadData((returnedDataFromApi) => {
-      expect(returnedDataFromApi.text).toBe("Mock note");
+      expect(returnedDataFromApi[0]).toBe("Mock note");
       expect(fetch).toHaveBeenCalledWith('http://localhost:3000/notes');
 
       // 4. Tell Jest our test can now end.

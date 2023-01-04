@@ -3,16 +3,23 @@
  */
 
 const fs = require('fs');
-const NotesModel = require('./notesModel')
-const NotesView = require("./notesView")
+const NotesModel = require('./notesModel');
+const NotesView = require('./notesView');
+const NotesClient = require('./notesClient');
+
+jest.mock('./notesClient');
 
 describe(NotesView, () => {
 
-  let notesModel, notesView;
+  let notesModel, notesView, notesClient;
   beforeEach(() => {
+    NotesClient.mockClear();
+    
     document.body.innerHTML = fs.readFileSync('./index.html');
+
+    notesClient = new NotesClient();
     notesModel = new NotesModel();
-    notesView = new NotesView(notesModel);
+    notesView = new NotesView(notesModel, notesClient);
   });
 
   it('display notes is empty', () => {
@@ -55,4 +62,17 @@ describe(NotesView, () => {
     expect(notes[0].textContent).toBe('Note 1');
     expect(notes[1].textContent).toBe('Note 2');
   });
-})
+
+  it('displays notes from notes server (GET /notes)', () => {
+    const displaySpy = jest.spyOn(notesView, 'displayNotes');
+    notesClient.loadData.mockImplementation((callback) => {
+      callback(['This is a mock note']);
+    });
+    
+    notesView.displayNotesFromApi();
+
+    expect(notesClient.loadData).toHaveBeenCalled();
+    expect(notesModel.getNotes()).toEqual(['This is a mock note']);
+    expect(displaySpy).toHaveBeenCalled();
+  });
+});
