@@ -13,7 +13,7 @@ describe(NotesView, () => {
     document.body.innerHTML = fs.readFileSync('./index.html');
     notesModel = new NotesModel();
     notesView = new NotesView(notesModel);
-  })
+  });
 
   it('display notes is empty', () => {
     notesView.displayNotes();
@@ -27,8 +27,17 @@ describe(NotesView, () => {
     notesView.displayNotes();
 
     expect(document.querySelectorAll('.note').length).toBe(2);
-  })
+  });
 
+  it('displayNotes does not add extra notes', () => {
+    notesModel.addNote('Note 1');
+    notesView.displayNotes();
+    expect(document.querySelectorAll('.note').length).toBe(1);
+
+    notesView.displayNotes();
+    expect(document.querySelectorAll('.note').length).toBe(1);
+  });
+  
   it('user inputs two notes with a button', () => {
     const textInputEl = document.querySelector('#text-input');
     const buttonEl = document.querySelector('#input-button');
@@ -45,5 +54,5 @@ describe(NotesView, () => {
     expect(notes.length).toBe(2)
     expect(notes[0].textContent).toBe('Note 1');
     expect(notes[1].textContent).toBe('Note 2');
-  })
+  });
 })
