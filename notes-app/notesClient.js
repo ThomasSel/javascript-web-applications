@@ -27,6 +27,11 @@ class NotesClient {
     }).then(response => response.json())
       .then(responseData => callback(responseData));
   }
+
+  deleteNotes(errorCallback = (error) => {}) {
+    fetch('http://localhost:3000/notes', { method: 'DELETE' })
+      .catch((error) => errorCallback(error));
+  }
 }
 
 module.exports = NotesClient;

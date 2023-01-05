@@ -7,13 +7,13 @@ require('jest-fetch-mock').enableMocks()
 
 describe(NotesClient, () => {
 
+  let notesClient;
   beforeEach(() => {
     fetch.mockReset();
+    notesClient = new NotesClient();
   });
 
   it('calls loadNotes which uses fetch to load data', (done) => {
-    const notesClient = new NotesClient();
-
     fetch.mockResponseOnce(JSON.stringify([
       'Mock note'
     ]));
@@ -27,8 +27,6 @@ describe(NotesClient, () => {
   });
 
   it('createNote adds a note to the database', () => {
-    const notesClient = new NotesClient();
-
     fetch.mockResponseOnce(JSON.stringify([
       "Mock note"
     ]));
@@ -48,8 +46,6 @@ describe(NotesClient, () => {
   });
 
   it('loadNotes catches fetch error', (done) => {
-    const notesClient = new NotesClient();
-
     fetch.mockRejectedValue('Oops, something went wrong!');
 
     notesClient.loadNotes(() => {}, (error) => {
@@ -60,8 +56,6 @@ describe(NotesClient, () => {
   });
 
   it('emojifyNote sends a fetch request to emojify text', (done) => {
-    const notesClient = new NotesClient();
-
     fetch.mockResponseOnce(JSON.stringify({
       'status': 'OK',
       'text': 'Pineapple: :pineapple:',
@@ -84,5 +78,24 @@ describe(NotesClient, () => {
         done();
       }
     );
+  });
+
+  it('deleteNotes sends DELETE /notes http request', () => {
+    fetch.mockResponseOnce('');
+
+    notesClient.deleteNotes();
+
+    expect(fetch).toHaveBeenCalledWith(
+      'http://localhost:3000/notes', { method: 'DELETE' }
+    );
+  });
+
+  it('deleteNotes catches errors', (done) => {
+    fetch.mockRejectedValue('Oops, something went wrong');
+    
+    notesClient.deleteNotes((error) => {
+      expect(error).toBe('Oops, something went wrong');
+      done();
+    });
   });
 });
