@@ -22,6 +22,16 @@ describe(NotesView, () => {
     notesView = new NotesView(notesModel, notesClient);
   });
 
+  const mockEmojifyResponseOnce = (inputText, returnedText) => {
+    notesClient.emojifyNote.mockImplementationOnce((note, callback) => {
+      callback({
+        'status': 'OK',
+        'text': inputText,
+        'emojified_text': returnedText
+      });
+    });
+  }
+
   it('display notes is empty', () => {
     notesView.displayNotes();
 
@@ -110,14 +120,16 @@ describe(NotesView, () => {
       'Pineapple: :pineapple:', expect.any(Function)
     );
   });
-  
-  const mockEmojifyResponseOnce = (inputText, returnedText) => {
-    notesClient.emojifyNote.mockImplementationOnce((note, callback) => {
-      callback({
-        'status': 'OK',
-        'text': inputText,
-        'emojified_text': returnedText
-      });
-    });
-  }
+
+  it('reset notes button removes all buttons', () => {
+    notesModel.addNote('Note 1');
+    notesView.displayNotes();
+
+    const deleteButtonEl = document.querySelector('#delete-button');
+    deleteButtonEl.click();
+
+    expect(document.querySelectorAll('.note').length).toBe(0);
+    expect(notesModel.getNotes().length).toBe(0);
+    expect(notesClient.deleteNotes).toHaveBeenCalled();
+  });
 });

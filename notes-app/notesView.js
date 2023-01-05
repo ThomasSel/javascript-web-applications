@@ -16,6 +16,12 @@ class NotesView {
       })
       textInput.value = '';
     });
+
+    document.querySelector('#delete-button').addEventListener('click', () => {
+      this.notesClient.deleteNotes(error => this.displayError(error));
+      this.notesModel.reset();
+      this.displayNotes();
+    });
   }
   
   displayNotes() {

@@ -29,7 +29,7 @@ h1 {
 }
 
 input[type=text] {
-  width: 80%;
+  width: 55%;
   background: #fefefe;
   border-radius: 4px;
   padding: 10px 8px;
@@ -39,6 +39,7 @@ input[type=text] {
 }
 
 button {
+  width: 20%;
   background: #ebf8e7;
   border-radius: 4px;
   padding: 10px 8px;
