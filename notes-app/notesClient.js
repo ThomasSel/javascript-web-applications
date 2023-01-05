@@ -16,6 +16,17 @@ class NotesClient {
     })
       .catch((error) => errorCallback(error));
   }
+
+  emojifyNote(note, callback) {
+    fetch('https://makers-emojify.herokuapp.com/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'text': note})
+    }).then(response => response.json())
+      .then(responseData => callback(responseData));
+  }
 }
 
 module.exports = NotesClient;

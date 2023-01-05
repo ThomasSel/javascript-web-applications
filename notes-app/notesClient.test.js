@@ -15,11 +15,11 @@ describe(NotesClient, () => {
     const notesClient = new NotesClient();
 
     fetch.mockResponseOnce(JSON.stringify([
-      "Mock note"
+      'Mock note'
     ]));
 
     notesClient.loadNotes((returnedDataFromApi) => {
-      expect(returnedDataFromApi[0]).toBe("Mock note");
+      expect(returnedDataFromApi[0]).toBe('Mock note');
       expect(fetch).toHaveBeenCalledWith('http://localhost:3000/notes');
 
       done();
@@ -57,5 +57,32 @@ describe(NotesClient, () => {
 
       done();
     });
+  });
+
+  it('emojifyNote sends a fetch request to emojify text', (done) => {
+    const notesClient = new NotesClient();
+
+    fetch.mockResponseOnce(JSON.stringify({
+      'status': 'OK',
+      'text': 'Pineapple: :pineapple:',
+      'emojified_text': 'Pineapple: 🍍'
+    }));
+
+    notesClient.emojifyNote('Pineapple: :pineapple:',
+      (responseData) => {
+        expect(responseData.emojified_text).toEqual('Pineapple: 🍍');
+        expect(fetch).toHaveBeenCalledWith(
+          'https://makers-emojify.herokuapp.com/',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'text': 'Pineapple: :pineapple:'})
+          }
+        );
+        done();
+      }
+    );
   });
 });
