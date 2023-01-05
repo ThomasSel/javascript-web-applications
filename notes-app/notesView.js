@@ -7,11 +7,13 @@ class NotesView {
     const textInput = document.querySelector('#text-input');
 
     document.querySelector('#input-button').addEventListener('click', () => {
-      notesModel.addNote(textInput.value);
-      this.displayNotes();
-      notesClient.createNote(textInput.value, (error) => {
-        this.displayError(error);
-      });
+      this.notesClient.emojifyNote(textInput.value, (responseData) => {
+        notesModel.addNote(responseData.emojified_text);
+        this.displayNotes();
+        notesClient.createNote(responseData.emojified_text, (error) => {
+          this.displayError(error);
+        });
+      })
       textInput.value = '';
     });
   }

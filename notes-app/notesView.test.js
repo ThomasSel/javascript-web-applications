@@ -49,6 +49,9 @@ describe(NotesView, () => {
     const textInputEl = document.querySelector('#text-input');
     const buttonEl = document.querySelector('#input-button');
     
+    mockEmojifyResponseOnce('Note 1', 'Note 1');
+    mockEmojifyResponseOnce('Note 2', 'Note 2');
+    
     textInputEl.value = 'Note 1';
     buttonEl.click();
     expect(textInputEl.value).toBe('');
@@ -80,14 +83,41 @@ describe(NotesView, () => {
     const textInputEl = document.querySelector('#text-input');
     const buttonEl = document.querySelector('#input-button');
 
+    mockEmojifyResponseOnce('Note 1', 'Note 1');
+
     textInputEl.value = 'Note 1';
     buttonEl.click();
 
-    expect(notesClient.createNote).toHaveBeenCalledWith('Note 1');
+    expect(notesClient.createNote).toHaveBeenCalledWith('Note 1', expect.any(Function));
   });
 
   it('displays error if no connection to database', () => {
     notesView.displayError("Oops, something went wrong")
     expect(document.querySelector('div.error').textContent).toBe('Oops, something went wrong')
-  })
+  });
+
+  it('displays emojified text if the text has tags', () => {
+    const textInputEl = document.querySelector('#text-input');
+    const buttonEl = document.querySelector('#input-button');
+
+    mockEmojifyResponseOnce('Pineapple: :pineapple:', 'Pineapple: 🍍');
+
+    textInputEl.value = 'Pineapple: :pineapple:';
+    buttonEl.click();
+
+    expect(document.querySelector('.note').textContent).toBe('Pineapple: 🍍');
+    expect(notesClient.emojifyNote).toHaveBeenCalledWith(
+      'Pineapple: :pineapple:', expect.any(Function)
+    );
+  });
+  
+  const mockEmojifyResponseOnce = (inputText, returnedText) => {
+    notesClient.emojifyNote.mockImplementationOnce((note, callback) => {
+      callback({
+        'status': 'OK',
+        'text': inputText,
+        'emojified_text': returnedText
+      });
+    });
+  }
 });
